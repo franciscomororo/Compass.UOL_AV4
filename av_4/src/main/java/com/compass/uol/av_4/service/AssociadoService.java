@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.compass.uol.av_4.entity.Associado;
+import com.compass.uol.av_4.entity.enums.CargoPolitico;
 import com.compass.uol.av_4.repository.AssociadoRepository;
 
 @Service
@@ -46,6 +47,10 @@ public class AssociadoService {
 		newAssociado.setCargoPolitico(associado.getCargoPolitico());
 		newAssociado.setDataNascimento(associado.getDataNascimento());
 		newAssociado.setSexo(associado.getSexo());
+	}
+
+	public List<Associado> filtrarCargoPolitico(CargoPolitico cargoPolitico) {
+		return associadoRepository.findByCargoPolitico(cargoPolitico);
 	}
 
 }

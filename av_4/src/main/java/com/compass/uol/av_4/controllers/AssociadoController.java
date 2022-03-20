@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compass.uol.av_4.entity.Associado;
+import com.compass.uol.av_4.entity.enums.CargoPolitico;
 import com.compass.uol.av_4.service.AssociadoService;
 
 @RestController
@@ -30,8 +31,8 @@ public class AssociadoController {
 	private AssociadoService associadoService;
 
 	@GetMapping
-	public ResponseEntity<List<Associado>> findAll() {
-		return ResponseEntity.ok(associadoService.findAll());
+	public ResponseEntity<List<Associado>> filtrarCargoPolitico(CargoPolitico cargoPolitico) {
+		return ResponseEntity.ok(associadoService.filtrarCargoPolitico(cargoPolitico));
 	}
 
 	@GetMapping("/{id}")

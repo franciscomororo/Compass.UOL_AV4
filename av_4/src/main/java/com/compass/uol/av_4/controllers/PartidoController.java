@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.compass.uol.av_4.entity.Partido;
+import com.compass.uol.av_4.entity.enums.Ideologia;
 import com.compass.uol.av_4.service.PartidoService;
 
 @RestController
@@ -30,8 +31,8 @@ public class PartidoController {
 	private PartidoService partidoService;
 
 	@GetMapping
-	public ResponseEntity<List<Partido>> findAll() {
-		return ResponseEntity.ok(partidoService.findAll());
+	public ResponseEntity<List<Partido>> filtrarIdeologia(Ideologia ideologia) {
+		return ResponseEntity.ok(partidoService.filtrarIdeologia(ideologia));
 	}
 
 	@GetMapping("/{id}")

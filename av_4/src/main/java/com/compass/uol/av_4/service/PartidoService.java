@@ -8,7 +8,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.compass.uol.av_4.entity.Associado;
 import com.compass.uol.av_4.entity.Partido;
+import com.compass.uol.av_4.entity.enums.Ideologia;
 import com.compass.uol.av_4.repository.PartidoRepository;
 
 @Service
@@ -46,6 +48,10 @@ public class PartidoService {
 		newPartido.setDataFundacao(partido.getDataFundacao());
 		newPartido.setSigla(partido.getSigla());
 		newPartido.setIdeologia(partido.getIdeologia());
+	}
+	
+	public List<Partido> filtrarIdeologia(Ideologia ideologia) {
+		return partidoRepository.findByIdeologia(ideologia);
 	}
 
 }
