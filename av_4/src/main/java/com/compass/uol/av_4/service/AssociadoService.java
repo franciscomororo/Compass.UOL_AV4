@@ -1,7 +1,6 @@
 package com.compass.uol.av_4.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -15,6 +14,8 @@ import com.compass.uol.av_4.entity.Partido;
 import com.compass.uol.av_4.entity.enums.CargoPolitico;
 import com.compass.uol.av_4.repository.AssociadoRepository;
 import com.compass.uol.av_4.repository.PartidoRepository;
+import com.compass.uol.av_4.service.exception.MethodArgumentNotValidException;
+import com.compass.uol.av_4.service.exception.ObjectNotFoundException;
 
 @Service
 public class AssociadoService {
@@ -30,12 +31,19 @@ public class AssociadoService {
 	}
 
 	public Associado findById(Integer id) {
-		Optional<Associado> associado = associadoRepository.findById(id);
-		return associado.get();
+		Associado associado = associadoRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("ID não encontrado"));
+		return associado;
 	}
 
 	public Associado insert(@Valid Associado associado) {
-		return associadoRepository.save(associado);
+
+		try {
+			return associadoRepository.save(associado);
+		} catch (MethodArgumentNotValidException e) {
+			throw new MethodArgumentNotValidException(e.getMessage());
+		}
+
 	}
 
 	public void delete(Integer id) {
@@ -44,9 +52,14 @@ public class AssociadoService {
 	}
 
 	public Associado update(Integer id, @Valid Associado associado) {
-		Associado newAssociado = associadoRepository.findById(id).orElse(null);
-		updateAssociado(newAssociado, associado);
-		return associadoRepository.save(newAssociado);
+		Associado newAssociado = associadoRepository.findById(id)
+				.orElseThrow(() -> new ObjectNotFoundException("ID não encontrado"));
+		try {
+			updateAssociado(newAssociado, associado);
+			return associadoRepository.save(newAssociado);
+		} catch (MethodArgumentNotValidException e) {
+			throw new MethodArgumentNotValidException(e.getMessage());
+		}
 	}
 
 	private void updateAssociado(Associado newAssociado, @Valid Associado associado) {
@@ -62,15 +75,18 @@ public class AssociadoService {
 
 	public AssociadoPartidoDTO insertAssociaPartido(@Valid AssociaPartidoAssociadoDTO associaPartidoAssociado) {
 		Partido partido = partidoRepository.findById(associaPartidoAssociado.getIdPartido())
-				.orElse(null);
-		Associado associado = associadoRepository.findById(associaPartidoAssociado.getIdAssociado()).orElse(null);
+				.orElseThrow(() -> new ObjectNotFoundException("Partido com ID não encontrado"));
+		Associado associado = associadoRepository.findById(associaPartidoAssociado.getIdAssociado())
+				.orElseThrow(() -> new ObjectNotFoundException("Associado com ID não encontrado"));
 		partido.adicionaAssociado(associado);
 		return new AssociadoPartidoDTO(associado, partido);
 	}
 
 	public void deletarAssociaPartidoAssociado(Integer idAssociado, Integer idPartido) {
-		Associado associado = associadoRepository.findById(idAssociado).orElse(null);
-		Partido partido = partidoRepository.findById(idPartido).orElse(null);
+		Partido partido = partidoRepository.findById((idPartido))
+				.orElseThrow(() -> new ObjectNotFoundException("Partido com ID não encontrado"));
+		Associado associado = associadoRepository.findById(idAssociado)
+				.orElseThrow(() -> new ObjectNotFoundException("Associado com ID não encontrado"));
 		partido.removerAssociado(associado);
 	}
 

@@ -29,8 +29,9 @@ public class Associado {
 	private String nome;
 	@NotNull @Enumerated(EnumType.STRING)
 	private CargoPolitico cargoPolitico;
+	@NotNull
     @JsonFormat(pattern = "dd-MM-yyyy")
-	private LocalDate dataNascimento;
+   	private LocalDate dataNascimento;
 	@NotNull @Enumerated(EnumType.STRING)
 	private Sexo sexo;
 	

@@ -13,8 +13,21 @@ import lombok.Data;
 
 @Data
 public class AssociadoPartidoDTO {
-	
-	
+
+	private Integer id;
+	@NotNull
+	@NotEmpty
+	private String nome;
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private CargoPolitico cargoPolitico;
+	@NotNull
+	@NotEmpty
+	private String nomePartido;
+	@NotNull
+	@NotEmpty
+	private String sigla;
+
 	public AssociadoPartidoDTO(Associado associado, Partido partido) {
 		this.setId(associado.getId());
 		this.setNome(associado.getNome());
@@ -22,14 +35,5 @@ public class AssociadoPartidoDTO {
 		this.setSigla(partido.getSigla());
 		this.setNomePartido(partido.getNomePartido());
 	}
-	private Integer id;
-	@NotNull @NotEmpty
-	private String nome;
-	@NotNull @Enumerated(EnumType.STRING)
-	private CargoPolitico cargoPolitico;
-	@NotNull @NotEmpty
-	private String nomePartido;
-	@NotNull @NotEmpty
-	private String sigla;
 
 }

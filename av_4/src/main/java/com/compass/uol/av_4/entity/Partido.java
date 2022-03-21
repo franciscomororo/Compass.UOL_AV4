@@ -35,6 +35,7 @@ public class Partido {
 	@NotNull 
 	@Enumerated(EnumType.STRING)
 	private Ideologia ideologia;
+	@NotNull
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private LocalDate dataFundacao;
 	
