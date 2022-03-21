@@ -8,15 +8,22 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.compass.uol.av_4.controllers.dto.AssociaPartidoAssociadoDTO;
+import com.compass.uol.av_4.controllers.dto.AssociadoPartidoDTO;
 import com.compass.uol.av_4.entity.Associado;
+import com.compass.uol.av_4.entity.Partido;
 import com.compass.uol.av_4.entity.enums.CargoPolitico;
 import com.compass.uol.av_4.repository.AssociadoRepository;
+import com.compass.uol.av_4.repository.PartidoRepository;
 
 @Service
 public class AssociadoService {
 
 	@Autowired
 	AssociadoRepository associadoRepository;
+
+	@Autowired
+	PartidoRepository partidoRepository;
 
 	public List<Associado> findAll() {
 		return associadoRepository.findAll();
@@ -51,6 +58,20 @@ public class AssociadoService {
 
 	public List<Associado> filtrarCargoPolitico(CargoPolitico cargoPolitico) {
 		return associadoRepository.findByCargoPolitico(cargoPolitico);
+	}
+
+	public AssociadoPartidoDTO insertAssociaPartido(@Valid AssociaPartidoAssociadoDTO associaPartidoAssociado) {
+		Partido partido = partidoRepository.findById(associaPartidoAssociado.getIdPartido())
+				.orElse(null);
+		Associado associado = associadoRepository.findById(associaPartidoAssociado.getIdAssociado()).orElse(null);
+		partido.adicionaAssociado(associado);
+		return new AssociadoPartidoDTO(associado, partido);
+	}
+
+	public void deletarAssociaPartidoAssociado(Integer idAssociado, Integer idPartido) {
+		Associado associado = associadoRepository.findById(idAssociado).orElse(null);
+		Partido partido = partidoRepository.findById(idPartido).orElse(null);
+		partido.removerAssociado(associado);
 	}
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.compass.uol.av_4.controllers.dto.AssociadoPartidoDTO;
 import com.compass.uol.av_4.entity.Partido;
 import com.compass.uol.av_4.entity.enums.Ideologia;
 import com.compass.uol.av_4.service.PartidoService;
@@ -58,5 +59,10 @@ public class PartidoController {
 	public ResponseEntity<Partido> update(@PathVariable(value = "id") Integer id, @RequestBody @Valid Partido partido) {
 		partidoService.update(id, partido);
 		return ResponseEntity.ok().build();
+	}
+	
+	@GetMapping("/{id}/associados")
+	public ResponseEntity<List<AssociadoPartidoDTO>> findByPartidoAssociados(@PathVariable Integer id){
+		return ResponseEntity.ok(partidoService.findByPartidoAssociados(id));
 	}
 }
